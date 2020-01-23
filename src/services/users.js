@@ -27,13 +27,13 @@ export default {
 
         return user;
     },
-    async show(id) {        
+    async show(email) {        
         const users = this._init();
-        return users.find(user => user.id = id);
+        return users.find(user => user.email = email);
     },
     async update(user) {
         const users = this._init();
-        const index = users.findIndex(user => user.id = id);
+        const index = users.findIndex(user => user.email = email);
 
         users[index] = user;
         await AsyncStorage.setItem(STORAGE_KEY, users);
