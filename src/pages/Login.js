@@ -1,82 +1,119 @@
-import React, { useState, useCallback } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet
-} from "react-native";
+import React, {useState, useEffect} from 'react';
+import { View, SafeAreaView, KeyboardAvoidingView, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import UserService from "../services/users";
 import SessionService from "../services/session";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import car from '../assets/car.png';
 
-  const onHandleLogin = useCallback(async () => {
-    const user = await UserService.show(email);
+export default function Login({ navigation }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    if (!user) {
-      alert("Usuário não cadastrado");
-      return;
+    useEffect(() => {
+      if(!SessionService.index()){
+        navigation.navigate('Home');
+      }
+    }, []);
+
+    function onHandleLogin() {
+       const user = UserService.show(email);
+
+        if(!user) {
+            alert("Usuário não cadastrado");
+            return;
+        }
+
+        if(user.password !== password) {
+            alert("Senha incorreta");
+            return;
+        }
+
+        SessionService.create(user);
+        navigation.navigate('Home');
     }
 
-    if (user.password !== password) {
-      alert("Senha incorreta");
-      return;
-    }
-
-    await SessionService.create(user);
-    alert("logado");
-  });
-
-  return (
-    <View style={StyleSheet.container}>
-      <TextInput
-        onChangeText={text => setEmail(text)}
-        value={email}
-        style={styles.email}
-      />
-      <TextInput
-        onChangeText={text => setPassword(text)}
-        value={password}
-        style={styles.password}
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={onHandleLogin} style={styles.button}>
-        <Text style={styles.buttonText}>Logar</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    return (
+        <SafeAreaView style={styles.container}>
+          <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
+            <View  style={styles.logoContainer}>
+              <Image style={styles.logo} source={car} />
+            </View>
+            <View style={styles.actionsContainer}>
+              <TextInput 
+                  onChangeText={text => setEmail(text)} 
+                  value={email} 
+                  style={styles.email}
+                  placeholder="Email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCompleteType="email" />
+              <TextInput 
+                  onChangeText={text => setPassword(text)} 
+                  value={password} 
+                  style={styles.password}
+                  placeholder="Senha" 
+                  autoCapitalize="none"
+                  autoCompleteType="password"
+                  secureTextEntry />
+              <TouchableOpacity 
+                  onPress={onHandleLogin} 
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>Logar</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#D3D3D3"
-  },
-  email: {
-    width: 300,
-    height: 24,
-    paddingBottom: 10
-  },
-  password: {
-    width: 300,
-    height: 24,
-    paddingBottom: 10
-  },
-  button: {
-    width: 300,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3B83Bd",
-    borderRadius: 2
-  },
-  buttonText: {
-    fontWeight: "bold"
-  }
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f1f1f1'
+    },
+    content: {
+        flex: 1
+    },
+    logoContainer:{
+      flex: 2,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    logo:{
+      width: 96,
+      height: 96
+    },
+    actionsContainer:{
+      flex: 1
+    },
+    email: {
+        width: 280,
+        height: 40,
+        paddingHorizontal: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#999'
+    },
+    password: {
+        width: 280,
+        height: 40,
+        paddingHorizontal: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#999'
+    },
+    button: {
+        width: 280,
+        height: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#3B83Bd',
+        borderRadius: 5,
+        marginTop: 10
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        color: '#ffffff'
+    }
 });
