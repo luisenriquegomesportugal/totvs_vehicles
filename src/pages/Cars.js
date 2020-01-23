@@ -1,9 +1,8 @@
-import React, { TextInput } from "react-native";
+import React, { useState } from "react";
 
-import { StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { StyleSheet, View, TextInput } from "react-native";
 
-export default function Cars() {
+function Cars() {
   const [CarName, setCarName] = useState("");
 
   return (
