@@ -1,12 +1,11 @@
 {
-  "name": "github.com/luuisportugal/totvs_vehicles",
-  "version": "0.0.0",
-  "description": "LuuisPortugal/totvs_vehicles @ Jan 23, 2020",
-  "author": null,
-  "private": true,
   "main": "node_modules/expo/AppEntry.js",
-  "devDependencies": {
-    "babel-preset-expo": "^7.0.0"
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
   "dependencies": {
     "expo": "~36.0.0",
@@ -14,13 +13,16 @@
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
-    "react-navigation": "^4.0.10",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
-    "react-native-reanimated": "~1.4.0",
-    "react-native-gesture-handler": "~1.5.0",
-    "react-native-safe-area-context": "0.6.0"
-  }
+    "react-native-web": "~0.11.7",
+    "react-navigation": "^4.0.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-preset-expo": "~8.0.0"
+  },
+  "private": true
 }

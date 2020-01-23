@@ -1,15 +1,16 @@
 import { AsyncStorage } from 'react-native';
 
-let session = null;
+const STORAGE_KEY = "SESSION_STORAGE_KEY";
 
 export default {
     async index() {
-        return session;
+        return await AsyncStorage.getItem(STORAGE_KEY);
     },
     async create(user) {
-        session = user;
+        await AsyncStorage.removeItem(STORAGE_KEY);
+        await AsyncStorage.setItem(STORAGE_KEY, user);
     },
     async destroy(){
-        session = null;
+        await AsyncStorage.removeItem(STORAGE_KEY);
     }
 }
