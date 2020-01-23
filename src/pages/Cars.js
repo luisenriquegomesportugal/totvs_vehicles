@@ -53,31 +53,31 @@ function Cars() {
   ]);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity
-          style={styles.imgContainer}
-          onPress={() => {}}
-          style={styles.imgContainer}
-        >
-          <Image source={carImg} style={styles.profileLogo} />
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View>
+          <TouchableOpacity
+              style={styles.imgContainer}
+              onPress={() => {}}
+              style={styles.imgContainer}
+          >
+            <Image source={carImg} style={styles.profileLogo} />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={changeFavorite} style={styles.fav}>
-          <Image source={favoriteImg} style={styles.favLogo} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={changeFavorite} style={styles.fav}>
+            <Image source={favoriteImg} style={styles.favLogo} />
+          </TouchableOpacity>
 
-        <View style={styles.cardInfo}>
-          <Text style={styles.cardInfoText}>Fabricado:{car.manufacturer}</Text>
-          <Text style={styles.cardInfoText}>Modelo:{car.name}</Text>
-          <Text style={styles.cardInfoText}>Ano:{car.year}</Text>
-          <Text style={styles.cardInfoText}>valor:{car.price}</Text>
-          <Text style={styles.cardInfoText}>Vendedor:{car.seller}</Text>
-          <Text style={styles.cardInfoText}>opcionais:</Text>
-          <Text style={styles.cardInfoText}>Descrição:{car.Descripiton}</Text>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardInfoText}>Fabricado:{car.manufacturer}</Text>
+            <Text style={styles.cardInfoText}>Modelo:{car.name}</Text>
+            <Text style={styles.cardInfoText}>Ano:{car.year}</Text>
+            <Text style={styles.cardInfoText}>valor:{car.price}</Text>
+            <Text style={styles.cardInfoText}>Vendedor:{car.seller}</Text>
+            <Text style={styles.cardInfoText}>opcionais:</Text>
+            <Text style={styles.cardInfoText}>Descrição:{car.Descripiton}</Text>
+          </View>
         </View>
       </View>
-    </View>
   );
 }
 

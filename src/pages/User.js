@@ -24,36 +24,36 @@ function User() {
   function changeImageProfile() {}
 
   return (
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity
-          onPress={changeImageProfile}
-          style={styles.imgContainer}
-        >
-          <Image source={profile} style={styles.profileLogo} />
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View>
+          <TouchableOpacity
+              onPress={changeImageProfile}
+              style={styles.imgContainer}
+          >
+            <Image source={profile} style={styles.profileLogo} />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={changeImageProfile} style={styles.star}>
-          <Image source={camera} style={styles.starLogo} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={changeImageProfile} style={styles.star}>
+            <Image source={camera} style={styles.starLogo} />
+          </TouchableOpacity>
 
-        <Text>Nome: </Text>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Alterar Nome"
-          onChangeText={setUserName}
-          value={userName}
-        />
+          <Text>Nome: </Text>
+          <TextInput
+              style={styles.inputText}
+              placeholder="Alterar Nome"
+              onChangeText={setUserName}
+              value={userName}
+          />
 
-        <Text>Senha: </Text>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Senha"
-          onChangeText={setUserPassword}
-          value={userPassword}
-        />
+          <Text>Senha: </Text>
+          <TextInput
+              style={styles.inputText}
+              placeholder="Senha"
+              onChangeText={setUserPassword}
+              value={userPassword}
+          />
+        </View>
       </View>
-    </View>
   );
 }
 
