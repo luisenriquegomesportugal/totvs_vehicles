@@ -1,26 +1,30 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
   Image,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
-  StatusBar,
-  FlatList,
-} from 'react-native';
+  FlatList
+} from "react-native";
 
-import VehiclesService from '../services/vehicles';
-import car from '../assets/car.png';
+import car from "../assets/car.png";
 
-export default function CarList({ item, onItemPress }) {
+export default function CarList({ itens, onItemPress }) {
   return (
     <FlatList
       style={styles.flatlist}
-      ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: '#dedede'}} />}
-      data={VehiclesService.all()}
+      ItemSeparatorComponent={() => (
+        <View style={{ height: 1, backgroundColor: "#dedede" }} />
+      )}
+      ListEmptyComponent={() => (
+        <View style={styles.listEmptyComponent}>
+          <Text style={styles.listEmptyComponentText}>Nenhum resultado</Text>
+        </View>
+      )}
+      data={itens}
       keyExtractor={vehicle => vehicle.name}
-      renderItem={({item}) => (
+      renderItem={({ item }) => (
         <TouchableOpacity onPress={() => onItemPress(item)}>
           <View style={styles.card}>
             <Image style={styles.cardImage} source={car} />
@@ -43,11 +47,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   card: {
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 10
   },
   cardImage: {
@@ -55,19 +59,30 @@ const styles = StyleSheet.create({
     height: 48,
     margin: 10,
     aspectRatio: 1,
-    borderRadius: '50%'
+    borderRadius: 50
   },
   cardText: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingHorizontal: 10
   },
   cardTextTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "400"
   },
   cardTextInfo: {
     fontSize: 14,
-    color: '#999',
+    color: "#999",
+    fontWeight: "300"
+  },
+  listEmptyComponent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10
+  },
+  listEmptyComponentText: {
+    fontSize: 14,
+    fontWeight: "300"
   }
 });
