@@ -10,7 +10,7 @@ import {
 
 import car from "../assets/car.png";
 
-export default function CarList({ itens, onItemPress }) {
+export default function CarList({ itens, isFetching, onRefresh, onItemPress }) {
   return (
     <FlatList
       style={styles.flatlist}
@@ -22,6 +22,8 @@ export default function CarList({ itens, onItemPress }) {
           <Text style={styles.listEmptyComponentText}>Nenhum resultado</Text>
         </View>
       )}
+      onRefresh={onRefresh}
+      refreshing={isFetching}
       data={itens}
       keyExtractor={vehicle => vehicle.name}
       renderItem={({ item }) => (

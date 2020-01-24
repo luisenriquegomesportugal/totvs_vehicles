@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
-  FlatList,
   Text,
   Image,
   StyleSheet,
@@ -20,19 +19,21 @@ import profile from "../assets/profile.png";
 
 export default function Home({ navigation }) {
   const user = SessionService.index();
-  const [vehicles, setVehicles] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [vehicles, setVehicles] = useState(VehiclesService.all());
+  const [vehiclesFiltered, setVehiclesFiltered] = useState([]);
   const [filter, setFilter] = useState("");
   const [favor, setFavor] = useState(false);
 
   useEffect(() => {
-    let vehiclesFiltered = VehiclesService.all();
+    let _vehiclesFiltered = vehicles;
 
     if (favor) {
-      vehiclesFiltered = vehiclesFiltered.filter(vehicle => vehicle.favor);
+      _vehiclesFiltered = _vehiclesFiltered.filter(vehicle => vehicle.favor);
     }
 
     if (filter) {
-      vehiclesFiltered = vehiclesFiltered.filter(vehicle =>
+      _vehiclesFiltered = _vehiclesFiltered.filter(vehicle =>
         Object.values(vehicle).some(
           field =>
             typeof field === "string" &&
@@ -44,12 +45,19 @@ export default function Home({ navigation }) {
       );
     }
 
-    setVehicles(vehiclesFiltered);
-  }, [favor, filter]);
+    setVehiclesFiltered(_vehiclesFiltered);
+  }, [favor, filter, vehicles]);
 
   function onHandleClickLogout() {
     SessionService.destroy();
     navigation.navigate("Login");
+  }
+
+  function onRefreshCarList() {
+    setIsFetching(true);
+    setVehicles(VehiclesService.all());
+
+    setTimeout(() => setIsFetching(false), 2000);
   }
 
   return (
@@ -90,7 +98,9 @@ export default function Home({ navigation }) {
         </View>
         <CarList
           style={styles.list}
-          itens={vehicles}
+          itens={vehiclesFiltered}
+          onRefresh={onRefreshCarList}
+          isFetching={isFetching}
           onItemPress={item => alert(item.name)}
         />
       </View>
