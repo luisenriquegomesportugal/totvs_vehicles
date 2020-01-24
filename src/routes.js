@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import Cars from "./pages/Cars";
+import Vehicle from "./pages/Vehicle";
 import AddVehicle from "./pages/AddVehicle";
 import ChangePass from "./pages/ChangePass";
 import Home from "./pages/Home";
@@ -52,6 +53,13 @@ const UserRoute = createStackNavigator({
 });
 
 const EmployeeRoute = createStackNavigator({
+  Vehicle: {
+    screen: Vehicle,
+    navigationOptions: {
+      ...navigationOptions,
+      title: "Formulário de veículo"
+    }
+  },
   AddVehicle: {
     screen: AddVehicle,
     navigationOptions: {
