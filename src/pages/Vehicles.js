@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -6,19 +6,23 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+  TouchableOpacity
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
-import CarList from '../components/CarList';
+import favorite from "../assets/star.png";
+import favoriteOn from "../assets/starOn.png";
 
-import VehiclesService from '../services/vehicles';
+import CarList from "../components/CarList";
+import Header from "../components/Header";
+
+import VehiclesService from "../services/vehicles";
 
 export default function Home({ navigation }) {
   const [isFetching, setIsFetching] = useState(false);
   const [vehicles, setVehicles] = useState(VehiclesService.all());
   const [vehiclesFiltered, setVehiclesFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   const [favor, setFavor] = useState(false);
 
   useEffect(() => {
@@ -48,11 +52,12 @@ export default function Home({ navigation }) {
     setIsFetching(true);
     setVehicles(VehiclesService.all());
 
-    setTimeout(() => setIsFetching(false), 2000);
+    setTimeout(() => setIsFetching(false), 1000);
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header navigation={navigation} />
       <View style={styles.listContainer}>
         <View style={styles.filter}>
           <TextInput
@@ -63,11 +68,11 @@ export default function Home({ navigation }) {
           />
           <TouchableOpacity
             style={styles.favorButton}
-            onPress={() => setFavor(favorite => !favorite)}>
-            <FontAwesome
-              name={favor ? 'star' : 'star-o'}
-              size={25}
-              color={'#555'}
+            onPress={() => setFavor(favorite => !favorite)}
+          >
+            <Image
+              source={favor ? favoriteOn : favorite}
+              style={styles.favLogo}
             />
           </TouchableOpacity>
         </View>
@@ -76,12 +81,13 @@ export default function Home({ navigation }) {
           itens={vehiclesFiltered}
           onRefresh={onRefreshCarList}
           isFetching={isFetching}
-          onItemPress={item => alert(item.name)}
+          onItemPress={item => navigation.navigate("Cars", { item })}
         />
       </View>
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate('AddVehicle')}>
+        onPress={() => navigation.navigate("AddVehicle")}
+      >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -91,47 +97,55 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: "#f1f1f1"
   },
   listContainer: {
-    flex: 1,
+    flex: 1
   },
   list: {
-    borderColor: '#ccc',
-    borderWidth: 1,
+    borderColor: "#ccc",
+    borderWidth: 1
   },
   filter: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   filterTextInput: {
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#999',
-    marginRight: 10,
+    borderBottomColor: "#999",
+    marginRight: 10
   },
   favorButton: {
     width: 40,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   fab: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    backgroundColor: '#ffcc00',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "absolute",
+    width: 60,
+    height: 60,
+    backgroundColor: "#3B83Bd",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 50,
-    bottom: 25,
-    right: 25,
+    bottom: 15,
+    right: 15,
+    elevation: 2,
+    shadowOpacity: 0.3,
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 1 }
   },
   fabText: {
-    color: '#fff',
-    fontSize: 20,
+    color: "#fff",
+    fontSize: 20
   },
+  favLogo: {
+    width: 25,
+    height: 25
+  }
 });

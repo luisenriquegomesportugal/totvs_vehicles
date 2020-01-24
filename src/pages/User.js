@@ -6,29 +6,27 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-import { Camera } from "expo-camera";
 import { ScrollView } from "react-native-gesture-handler";
 
 import profile_png from "../assets/user.png";
-import camera from "../assets/camera.png";
-import upload_png from "../assets/envio.png";
 
-function User() {
-  const [userName, setUserName] = useState("jon silva");
-  const [userPassword, setUserPassword] = useState("");
-  const [userConfirmPassword, setUserConfirmPassword] = useState("");
+import SessionService from "../services/session";
+import UserService from "../services/users";
 
-  const [profile, setProfile] = useState(profile_png);
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+function User({ navigation }) {
+  const user = SessionService.index();
+  console.log(user);
+  const [userName, setUserName] = useState(user.name);
+  const [profile, setProfile] = useState(user.image);
 
   async function getPermissionAsync() {
-    if (Constants.platform.ios) {
+    if (Platform.OS === "ios") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
@@ -40,14 +38,15 @@ function User() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
+      base64: true,
       aspect: [4, 3],
       quality: 1
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
-      setProfile(result);
+      setProfile({ uri: `data:image/png;base64,${result.base64}` });
+    } else {
+      setProfile(null);
     }
   }
 
@@ -56,52 +55,27 @@ function User() {
     _pickImage();
   }
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  // if (hasPermission === null) {
-  //   return <Camera style/>;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
+  function onHandleClickSave() {
+    UserService.update(
+      {
+        ...user,
+        name: userName,
+        image: profile
+      },
+      true
+    );
+    alert("Salvo com sucesso");
+  }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-      enabled
-    >
+    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <ScrollView>
         <View style={styles.ScrollView}>
-          <View style={styles.containerLogo}>
-            <TouchableOpacity
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}
-            >
-              <Image source={camera} style={styles.starLogo} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={changeImageProfile}>
-              <Image source={upload_png} style={styles.starLogo} />
-            </TouchableOpacity>
-          </View>
-
           <TouchableOpacity
             onPress={changeImageProfile}
             style={styles.imgContainer}
           >
-            <Image source={profile} style={styles.profileLogo} />
+            <Image source={profile || profile_png} style={styles.profileLogo} />
           </TouchableOpacity>
           <Text style={styles.textName}>{userName}</Text>
 
@@ -115,30 +89,15 @@ function User() {
             />
           </View>
 
-          <View>
-            <Text style={styles.text}>Digite um nova Senha: </Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.inputText}
-              placeholder={userPassword}
-              onChangeText={setUserPassword}
-              value={userPassword}
-            />
-          </View>
-
-          <View>
-            <Text style={styles.text}>Confirme sua nova Senha: </Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.inputText}
-              placeholder={userPassword}
-              onChangeText={setUserPassword}
-              value={userPassword}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={onHandleClickSave}>
             <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ChangePass")}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Alterar Senha</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -149,7 +108,8 @@ function User() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f1f1f1"
+    backgroundColor: "#f1f1f1",
+    padding: 15
   },
   ScrollView: {
     alignItems: "center",
@@ -164,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     justifyContent: "center",
-    backgroundColor: "#3B83Bd"
+    backgroundColor: "#fff"
   },
   containerLogo: {
     alignSelf: "flex-end",

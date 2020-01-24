@@ -20,8 +20,9 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (SessionService.index()) {
-      navigation.navigate("UserRoute");
+    const user = SessionService.index();
+    if (user) {
+      navigateToHome(user);
     }
   }, []);
 
@@ -39,6 +40,10 @@ export default function Login({ navigation }) {
     }
 
     SessionService.create(user);
+    navigateToHome(user);
+  }
+
+  function navigateToHome(user) {
     navigation.navigate(
       user.profile === "Usuário" ? "UserRoute" : "EmployeeRoute"
     );

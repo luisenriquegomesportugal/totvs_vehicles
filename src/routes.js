@@ -4,11 +4,10 @@ import { createStackNavigator } from "react-navigation-stack";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import Cars from "./pages/Cars";
-import Vehicle from "./pages/Vehicle";
+import Vehicles from "./pages/Vehicles";
 import AddVehicle from "./pages/AddVehicle";
 import ChangePass from "./pages/ChangePass";
 import Home from "./pages/Home";
-
 
 const navigationOptions = {
   headerStyle: {
@@ -35,29 +34,36 @@ const UserRoute = createStackNavigator({
       ...navigationOptions,
       title: "Detalhe do veículo"
     }
-  }, 
+  },
   ChangePass: {
     screen: ChangePass,
     navigationOptions: {
       ...navigationOptions,
       title: "Alterar senha"
     }
-  }, 
+  },
   User: {
     screen: User,
     navigationOptions: {
       ...navigationOptions,
       title: "Perfil"
     }
-  } 
+  }
 });
 
 const EmployeeRoute = createStackNavigator({
-  Vehicle: {
-    screen: Vehicle,
+  Vehicles: {
+    screen: Vehicles,
     navigationOptions: {
       ...navigationOptions,
-      title: "Formulário de veículo"
+      title: "Lista de veículos"
+    }
+  },
+  Cars: {
+    screen: Cars,
+    navigationOptions: {
+      ...navigationOptions,
+      title: "Detalhe do veículo"
     }
   },
   AddVehicle: {
@@ -66,21 +72,21 @@ const EmployeeRoute = createStackNavigator({
       ...navigationOptions,
       title: "Formulário de veículo"
     }
-  }, 
+  },
   ChangePass: {
     screen: ChangePass,
     navigationOptions: {
       ...navigationOptions,
       title: "Alterar senha"
     }
-  }, 
+  },
   User: {
     screen: User,
     navigationOptions: {
       ...navigationOptions,
       title: "Perfil"
     }
-  } 
+  }
 });
 
 export default createAppContainer(

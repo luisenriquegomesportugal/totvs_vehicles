@@ -1,5 +1,6 @@
 const vehicles = [
   {
+    id: "IUFFYQ987RYWIUEFHQ98RYWIDUWD",
     manufacturer: "Ford",
     name: "KA",
     year: "2016",
@@ -26,6 +27,12 @@ export default {
   },
   save(vehicle) {
     vehicles.push(vehicle);
+    return vehicle;
+  },
+  update(vehicle) {
+    const index = vehicles.findIndex(({ id }) => vehicle.id === id);
+    vehicles[index] = vehicle;
+
     return vehicle;
   }
 };

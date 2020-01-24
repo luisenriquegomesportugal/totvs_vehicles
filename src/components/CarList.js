@@ -9,6 +9,8 @@ import {
 } from "react-native";
 
 import car from "../assets/profile_car.png";
+import favorite from "../assets/star.png";
+import favoriteOn from "../assets/starOn.png";
 
 export default function CarList({ itens, isFetching, onRefresh, onItemPress }) {
   return (
@@ -37,6 +39,10 @@ export default function CarList({ itens, isFetching, onRefresh, onItemPress }) {
               <Text style={styles.cardTextInfo}>R$ {item.price}</Text>
               <Text style={styles.cardTextInfo}>{item.km} Km</Text>
             </View>
+            <Image
+              source={item.favor ? favoriteOn : favorite}
+              style={styles.favLogo}
+            />
           </View>
         </TouchableOpacity>
       )}
@@ -47,6 +53,11 @@ export default function CarList({ itens, isFetching, onRefresh, onItemPress }) {
 const styles = StyleSheet.create({
   flatlist: {
     flex: 1
+  },
+  favLogo: {
+    width: 20,
+    height: 20,
+    marginRight: 10
   },
   card: {
     width: "100%",

@@ -1,3 +1,5 @@
+import SessionServices from "./session";
+
 const users = [
   {
     image: {
@@ -42,9 +44,11 @@ export default {
   show(email) {
     return users.find(user => user.email === email);
   },
-  update(user) {
+  update(user, updateSession = false) {
     const index = users.findIndex(({ email }) => user.email === email);
     users[index] = user;
+
+    if (updateSession) SessionServices.create(user);
 
     return user;
   }

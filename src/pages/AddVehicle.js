@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -8,23 +8,30 @@ import {
   TextInput,
   StatusBar,
   KeyboardAvoidingView,
-  TouchableOpacity,
-} from 'react-native';
-import VehicleService from '../services/vehicles';
+  TouchableOpacity
+} from "react-native";
+import VehicleService from "../services/vehicles";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import Constants, { Camera } from "expo-camera";
-import CarImg from '../assets/car.svg';
+import CarImg from "../assets/profile_car.png";
 
 function AddVehicles() {
-  const [manufacturer, setManufacturer] = useState('');
-  const [name, setName] = useState('');
-  const [year, setYear] = useState('');
-  const [km, setKm] = useState('');
-  const [price, setPrice] = useState('');
-  const [seller, setSeller] = useState('');
-  const [description, setDescription] = useState('');
+  const [manufacturer, setManufacturer] = useState("");
+  const [name, setName] = useState("");
+  const [year, setYear] = useState("");
+  const [km, setKm] = useState("");
+  const [price, setPrice] = useState("");
+  const [seller, setSeller] = useState("");
+  const [description, setDescription] = useState("");
   const [profile, setProfile] = useState(CarImg);
+
+  let nameRef = useRef(null);
+  let yearRef = useRef(null);
+  let kmRef = useRef(null);
+  let priceRef = useRef(null);
+  let sellerRef = useRef(null);
+  let descriptionRef = useRef(null);
 
   async function getPermissionAsync() {
     if (Constants.platform.ios) {
@@ -54,8 +61,8 @@ function AddVehicles() {
   }
 
   const _addVehicle = () => {
-     if(!manufacturer || !name || !year || !km || !price || !seller) {
-      alert('Todos os campos são obrigatórios');
+    if (!manufacturer || !name || !year || !km || !price || !seller) {
+      alert("Todos os campos são obrigatórios");
       return;
     }
 
@@ -67,29 +74,24 @@ function AddVehicles() {
       price: price,
       seller: seller,
       favor: false,
-      description: 'launch edition',
-      optional: [
-        {},
-      ],
-      images: [profile],
+      description: "launch edition",
+      optional: [{}],
+      images: [profile]
     };
 
     VehicleService.save(vehicleObj);
 
-    alert('Adicionado com sucesso');
+    alert("Adicionado com sucesso");
   };
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.form}
-        behavior="padding"
-        keyboardVerticalOffset={100}
-        enabled>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <ScrollView style={styles.container} contentContainerStyle={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <TouchableOpacity
             style={styles.imgContainer}
-            onPress={() => changeImageProfile()}>
+            onPress={() => changeImageProfile()}
+          >
             <Image source={profile} style={styles.imgRound} />
           </TouchableOpacity>
         </View>
@@ -100,9 +102,9 @@ function AddVehicles() {
           style={styles.input}
           placeholder="Fabricante"
           autoCapitalize="words"
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => {
-            this.name.focus();
+            nameRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -114,11 +116,11 @@ function AddVehicles() {
           placeholder="Modelo"
           autoCapitalize="words"
           ref={input => {
-            this.name = input;
+            nameRef = input;
           }}
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => {
-            this.year.focus();
+            yearRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -131,11 +133,11 @@ function AddVehicles() {
           keyboardType="numeric"
           autoCapitalize="none"
           ref={input => {
-            this.year = input;
+            yearRef = input;
           }}
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => {
-            this.km.focus();
+            kmRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -148,11 +150,11 @@ function AddVehicles() {
           keyboardType="numeric"
           autoCapitalize="none"
           ref={input => {
-            this.km = input;
+            kmRef = input;
           }}
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => {
-            this.price.focus();
+            priceRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -165,11 +167,11 @@ function AddVehicles() {
           keyboardType="numeric"
           autoCapitalize="none"
           ref={input => {
-            this.price = input;
+            priceRef = input;
           }}
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => {
-            this.description.focus();
+            descriptionRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -182,10 +184,10 @@ function AddVehicles() {
           autoCapitalize="words"
           autoCompleteType="off"
           ref={input => {
-            this.description = input;
+            descriptionRef = input;
           }}
           onSubmitEditing={() => {
-            this.seller.focus();
+            sellerRef.focus();
           }}
           blurOnSubmit={false}
         />
@@ -198,7 +200,7 @@ function AddVehicles() {
           autoCapitalize="words"
           autoCompleteType="off"
           ref={input => {
-            this.seller = input;
+            sellerRef = input;
           }}
           onSubmitEditing={() => {
             _addVehicle();
@@ -209,49 +211,47 @@ function AddVehicles() {
         <TouchableOpacity style={styles.button} onPress={() => _addVehicle()}>
           <Text style={styles.buttonText}>Adicionar veículo</Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1f1f1',
-  },
-  form: {
-    padding: 15,
+    backgroundColor: "#f1f1f1",
+    padding: 15
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#999',
-    marginBottom: 5,
+    borderBottomColor: "#999",
+    marginBottom: 5
   },
   button: {
-    backgroundColor: '#3B83Bd',
+    backgroundColor: "#3B83Bd",
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 5,
-    marginTop: 15,
+    marginTop: 15
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff"
   },
   imgContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 100,
+    backgroundColor: "#fff",
+    borderRadius: 100
   },
-  imgRound: { 
-    width: 100, 
-    height: 100, 
-    borderRadius: 100,
-  },
+  imgRound: {
+    width: 100,
+    height: 100,
+    borderRadius: 100
+  }
 });
 
 export default AddVehicles;

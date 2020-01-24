@@ -11,11 +11,13 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 
 import CarList from "../components/CarList";
+import Header from "../components/Header";
 
 import SessionService from "../services/session";
 import VehiclesService from "../services/vehicles";
 
-import profile from "../assets/user.png";
+import favorite from "../assets/star.png";
+import favoriteOn from "../assets/starOn.png";
 
 export default function Home({ navigation }) {
   const user = SessionService.index();
@@ -48,35 +50,16 @@ export default function Home({ navigation }) {
     setVehiclesFiltered(_vehiclesFiltered);
   }, [favor, filter, vehicles]);
 
-  function onHandleClickLogout() {
-    SessionService.destroy();
-    navigation.navigate("Login");
-  }
-
   function onRefreshCarList() {
     setIsFetching(true);
     setVehicles(VehiclesService.all());
 
-    setTimeout(() => setIsFetching(false), 2000);
+    setTimeout(() => setIsFetching(false), 1000);
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={user.image || profile} style={styles.profile} />
-        <View style={styles.info}>
-          <Text style={styles.apresentation}>
-            {user.profile || "Sem perfil"}
-          </Text>
-          <Text style={styles.name}>{user.name || "Nome desconhecido"}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={onHandleClickLogout}
-        >
-          <FontAwesome name="sign-out" size={25} color={"#fff"} />
-        </TouchableOpacity>
-      </View>
+      <Header navigation={navigation} />
       <View style={styles.listContainer}>
         <View style={styles.filter}>
           <TextInput
@@ -89,10 +72,9 @@ export default function Home({ navigation }) {
             style={styles.favorButton}
             onPress={() => setFavor(favorite => !favorite)}
           >
-            <FontAwesome
-              name={favor ? "star" : "star-o"}
-              size={25}
-              color={"#555"}
+            <Image
+              source={favor ? favoriteOn : favorite}
+              style={styles.favLogo}
             />
           </TouchableOpacity>
         </View>
@@ -179,5 +161,9 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: "center",
     alignItems: "center"
+  },
+  favLogo: {
+    width: 25,
+    height: 25
   }
 });

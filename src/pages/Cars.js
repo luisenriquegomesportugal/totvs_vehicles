@@ -7,63 +7,61 @@ import {
   Image,
   ScrollView
 } from "react-native";
-import carImg from "../assets/profile.svg";
+import carImg from "../assets/profile_car.png";
 import favorite from "../assets/star.png";
 import favoriteOn from "../assets/starOn.png";
 
+import VehicleServices from "../services/vehicles";
+
 function Cars({ navigation }) {
   const car = navigation.getParam("item", {});
-  const [favor, setFavor] = useState(false);
-  const [favoriteImg, setFavoriteImg] = useState(favorite);
-
-  function changeFavorite() {
-    const img = favor ? favoriteOn : favorite;
-
-    setFavoriteImg(img);
-    setFavor(!favor);
-  }
+  const [favor, setFavor] = useState(car.favor);
 
   useEffect(() => {
-    changeFavorite();
-  }, []);
+    VehicleServices.update({ ...car, favor });
+  }, [favor]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <View style={styles.imgContainer}>
-          <Image source={carImg} style={styles.profileLogo} />
-        </View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+    >
+      <View style={styles.imgContainer}>
+        <Image source={carImg} style={styles.profileLogo} />
+      </View>
 
-        <TouchableOpacity onPress={changeFavorite} style={styles.fav}>
-          <Image source={favoriteImg} style={styles.favLogo} />
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => setFavor(old => !old)}
+        style={styles.fav}
+      >
+        <Image source={favor ? favoriteOn : favorite} style={styles.favLogo} />
+      </TouchableOpacity>
 
-        <View style={styles.cardInfo}>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Fabricante: </Text>
-            {car.manufacturer}
-          </Text>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Modelo: </Text>
-            {car.name}
-          </Text>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Ano: </Text>
-            {car.year}
-          </Text>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Preço: </Text>
-            R$ {car.price}
-          </Text>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Vendedor: </Text>
-            {car.seller}
-          </Text>
-          <Text style={styles.cardInfoBox}>
-            <Text style={styles.cardInfoText}>Descrição: </Text>
-            {car.Description}
-          </Text>
-        </View>
+      <View style={styles.cardInfo}>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Fabricante: </Text>
+          {car.manufacturer}
+        </Text>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Modelo: </Text>
+          {car.name}
+        </Text>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Ano: </Text>
+          {car.year}
+        </Text>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Preço: </Text>
+          R$ {car.price}
+        </Text>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Vendedor: </Text>
+          {car.seller}
+        </Text>
+        <Text style={styles.cardInfoBox}>
+          <Text style={styles.cardInfoText}>Descrição: </Text>
+          {car.Description}
+        </Text>
       </View>
     </ScrollView>
   );
@@ -74,9 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f1f1f1",
     color: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 15
+    padding: 20
   },
   imgContainer: {
     width: 150,
@@ -86,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     justifyContent: "center",
-    backgroundColor: "#3B83Bd"
+    backgroundColor: "#fff"
   },
   profileLogo: {
     width: 140,
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   cardInfoBox: {
-    width: "100%",
+    flex: 1,
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#999",
