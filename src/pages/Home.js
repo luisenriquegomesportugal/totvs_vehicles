@@ -15,7 +15,7 @@ import CarList from "../components/CarList";
 import SessionService from "../services/session";
 import VehiclesService from "../services/vehicles";
 
-import profile from "../assets/profile.png";
+import profile from "../assets/user.png";
 
 export default function Home({ navigation }) {
   const user = SessionService.index();
@@ -101,7 +101,7 @@ export default function Home({ navigation }) {
           itens={vehiclesFiltered}
           onRefresh={onRefreshCarList}
           isFetching={isFetching}
-          onItemPress={item => alert(item.name)}
+          onItemPress={item => navigation.navigate("Cars", { item })}
         />
       </View>
     </SafeAreaView>

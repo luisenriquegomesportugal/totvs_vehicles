@@ -13,7 +13,7 @@ import {
 import UserService from "../services/users";
 import SessionService from "../services/session";
 
-import car from "../assets/car.png";
+import car from "../assets/profile_car.png";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");

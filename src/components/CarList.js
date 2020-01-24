@@ -8,7 +8,7 @@ import {
   FlatList
 } from "react-native";
 
-import car from "../assets/car.png";
+import car from "../assets/profile_car.png";
 
 export default function CarList({ itens, isFetching, onRefresh, onItemPress }) {
   return (
